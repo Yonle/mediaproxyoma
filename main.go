@@ -25,14 +25,14 @@ func main() {
 
 	http.HandleFunc(proxypath, func(w http.ResponseWriter, r *http.Request) {
 		url := r.URL.Path[len(proxypath):]
-		sp := strings.Split(url, "/")
+		sp := strings.SplitN(url, "/", 3)
 
 		if len(sp) < 3 {
 			http.Error(w, "bad", http.StatusBadRequest)
 			return
 		}
 
-		decb, err := base64.RawStdEncoding.DecodeString(sp[len(sp)-2])
+		decb, err := base64.RawURLEncoding.DecodeString(sp[1])
 		if err != nil {
 			http.Error(w, "bad", http.StatusBadRequest)
 			return
@@ -53,14 +53,14 @@ func main() {
 
 	http.HandleFunc(proxypreviewpath, func(w http.ResponseWriter, r *http.Request) {
 		url := r.URL.Path[len(proxypreviewpath):]
-		sp := strings.Split(url, "/")
+		sp := strings.SplitN(url, "/", 3)
 
 		if len(sp) < 3 {
 			http.Error(w, "bad", http.StatusBadRequest)
 			return
 		}
 
-		decb, err := base64.RawStdEncoding.DecodeString(sp[len(sp)-2])
+		decb, err := base64.RawURLEncoding.DecodeString(sp[1])
 		if err != nil {
 			http.Error(w, "bad", http.StatusBadRequest)
 			return
