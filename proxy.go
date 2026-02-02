@@ -17,7 +17,7 @@ func proxy(ctx context.Context, r *http.Request, origin_url string) (resp *http.
 
 	clientHeader.Set("User-Agent", "mediaproxyoma - v0.1-dev")
 
-	// anonymize
+	// anonymize & workarounds
 	clientHeader.Del("x-forwarded-for")
 
 	req, err := http.NewRequestWithContext(ctx, r.Method, origin_url, nil)

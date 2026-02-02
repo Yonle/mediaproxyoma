@@ -110,6 +110,9 @@ func sex(hole http.ResponseWriter, dih io.ReadCloser, sperm *http.Response) {
 	if ar := rh.Get("Accept-Ranges"); ar != "" {
 		h.Set("Accept-Ranges", ar)
 	}
+	if ce := rh.Get("Content-Encoding"); ce != "" {
+		h.Set("Content-Encoding", ce)
+	}
 	if sperm.ContentLength > 0 {
 		h.Set("Content-Length", strconv.FormatInt(sperm.ContentLength, 10))
 	}
