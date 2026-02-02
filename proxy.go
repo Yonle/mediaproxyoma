@@ -22,7 +22,7 @@ func proxy(ctx context.Context, r *http.Request, origin_url string) (resp *http.
 	}
 
 	copyClientHeaders(req.Header, r.Header)
-	req.Header.Set("User-Agent", "mediaproxyoma - v0.1-dev")
+	req.Header.Set("User-Agent", "mediaproxyoma [https://github.com/Yonle/mediaproxyoma] - v0.2-dev")
 
 	return hc.Do(req)
 }
