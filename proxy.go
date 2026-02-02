@@ -16,12 +16,10 @@ var hc = http.Client{
 }
 
 func proxy(ctx context.Context, r *http.Request, origin_url string) (resp *http.Response, err error) {
-	clientHeader := r.Header.Clone()
-
+	clientHeader := http.Header{}
 	clientHeader.Set("User-Agent", "mediaproxyoma - v0.1-dev")
 
-	// anonymize & workarounds
-	clientHeader.Del("x-forwarded-for")
+	copyClientHeaders(clientHeader, r.Header)
 
 	req, err := http.NewRequestWithContext(ctx, r.Method, origin_url, nil)
 	if err != nil {

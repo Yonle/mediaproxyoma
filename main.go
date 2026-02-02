@@ -98,24 +98,14 @@ func sex(hole http.ResponseWriter, dih io.ReadCloser, sperm *http.Response) {
 	h := hole.Header()
 	h.Set("Access-Control-Allow-Credentials", "true")
 	h.Set("Access-Control-Allow-Origin", "*")
+
 	h.Set("Cache-Control", "public, max-age=604800, stale-while-revalidate=86400")
 
-	rh := sperm.Header
-	h.Set("Content-Type", rh.Get("Content-Type"))
-
-	// workaround for videos
-	if cr := rh.Get("Content-Range"); cr != "" {
-		h.Set("Content-Range", cr)
-	}
-	if ar := rh.Get("Accept-Ranges"); ar != "" {
-		h.Set("Accept-Ranges", ar)
-	}
-	if ce := rh.Get("Content-Encoding"); ce != "" {
-		h.Set("Content-Encoding", ce)
-	}
 	if sperm.ContentLength > 0 {
 		h.Set("Content-Length", strconv.FormatInt(sperm.ContentLength, 10))
 	}
+
+	copyUpstreamHeaders(h, sperm.Header)
 
 	hole.WriteHeader(sperm.StatusCode)
 
