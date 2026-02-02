@@ -15,4 +15,10 @@ running:
 env BWHERO_HOST=http://localhost:8080/ LISTEN=0.0.0.0:8888 ./mediaproxy
 ```
 
+or, spin the entire thing alongside [go-bwhero](https://github.com/Yonle/go-bwhero) via docker compose:
+```
+docker compose up
+```
+it will be on localhost:8080.
+
 then, configure your reverse proxy to forward any request going to /proxy/* to be forwarded to http://localhost:8888/ instead.
