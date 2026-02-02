@@ -21,4 +21,4 @@ docker compose up
 ```
 it will be on localhost:8080.
 
-then, configure your reverse proxy to forward any request going to /proxy/* to be forwarded to http://localhost:8888/ instead.
+then, configure your reverse proxy to forward any request going to /proxy/* to be forwarded to http://localhost:8080/ instead.
