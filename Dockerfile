@@ -17,8 +17,8 @@ LABEL org.opencontainers.image.source="https://github.com/Yonle/mediaproxyoma" \
       org.opencontainers.image.description="pleroma/akkoma alternative mediaproxy backend" \
       org.opencontainers.image.licenses="BSD-3-Clause"
 
-COPY --from=builder /out/exec.bin /bin/mediaproxyma
+COPY --from=builder /out/exec.bin /bin/mediaproxyoma
 
 ENV LISTEN=0.0.0.0:8080
 
-CMD ["/bin/mediaproxyma"]
+CMD ["/bin/mediaproxyoma"]
