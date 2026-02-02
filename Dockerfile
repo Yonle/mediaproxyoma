@@ -8,7 +8,7 @@ WORKDIR /a
 COPY . .
 
 RUN apk add --no-cache go \
-    && go build -trimpath -ldflags="-s -w -buildid=" -buildvcs=false -o /a/mp . \
+    && env CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid=" -buildvcs=false -o /a/mp . \
     && apk del go 
 
 ENV LISTEN=0.0.0.0:8080
