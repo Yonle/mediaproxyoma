@@ -44,7 +44,7 @@ func main() {
 		resp, err := proxy(r.Context(), r, url)
 		if err != nil {
 			log.Println("give up on fetching to upstream:", err)
-			http.Error(w, "bad.", http.StatusBadGateway)
+			http.Error(w, err.Error(), http.StatusBadGateway)
 			return
 		}
 
@@ -62,7 +62,7 @@ func main() {
 
 		decb, err := base64.RawURLEncoding.DecodeString(sp[1])
 		if err != nil {
-			http.Error(w, "bad", http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
