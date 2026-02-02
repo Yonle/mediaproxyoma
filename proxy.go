@@ -10,6 +10,9 @@ import (
 
 var hc = http.Client{
 	Timeout: 10 * time.Second,
+	Transport: &http.Transport{
+		DisableCompression: true,
+	},
 }
 
 func proxy(ctx context.Context, r *http.Request, origin_url string) (resp *http.Response, err error) {
