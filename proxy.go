@@ -28,5 +28,5 @@ func proxy(ctx context.Context, r *http.Request, origin_url string) (resp *http.
 }
 
 func buildUrl(upstr string) string {
-	return fmt.Sprintf("%s?url=%s&bw=0&l=20", proxyhost, url.QueryEscape(upstr))
+	return fmt.Sprintf("%s?url=%s&bw=0&l=20&nr=1", proxyhost, url.QueryEscape(upstr))
 }
