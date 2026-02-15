@@ -9,7 +9,7 @@ import (
 )
 
 var hc = http.Client{
-	Timeout: 10 * time.Second,
+	Timeout: 30 * time.Second,
 	Transport: &http.Transport{
 		DisableCompression: true,
 	},
