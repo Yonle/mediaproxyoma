@@ -15,6 +15,8 @@ running:
 env BWHERO_HOST=http://localhost:8080/ LISTEN=0.0.0.0:8888 ./mediaproxy
 ```
 
+optional to set: `USER_AGENT`
+
 or, spin the entire thing alongside [go-bwhero](https://github.com/Yonle/go-bwhero) via docker compose:
 ```
 docker compose up
