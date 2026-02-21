@@ -1,4 +1,20 @@
-## pleroma/akkoma alternative mediaproxy
+## mediaproxyoma
+
+**what is dis:** alternative media proxy backend for pleroma/akkoma
+
+## why?
+
+you might want to separate the process of processing proxy and thumbnail processing right at the same time in order to reduce load and avoiding crashes due to one of the part is broken (which is rare).
+
+however, the real reason here though is: apparently we have rather some problems with the existing mediaproxy (slow fetching, streaming & thumbnail processing), so we use libvips for image preview processing, and it's using `webp` for thumbnail preview by default to save more bandwidth to users.
+
+while libvips itself has been used in pleroma backend, some backend/fork like akkoma is still relying on a command line `convert` imagemagick command.
+
+on top of that, we also have:
+- a really quick GIF->Animated WEBP processing (for preview only, the real thing remains unaltered)
+- a really quick video thumbnail processing
+
+## running
 
 **requirements**:
 you need a working [go-bwhero](https://github.com/Yonle/go-bwhero) backend, and a golang compiler.
@@ -6,9 +22,6 @@ you need a working [go-bwhero](https://github.com/Yonle/go-bwhero) backend, and 
 ```
 go build -o mediaproxyoma .
 ```
-
-
-## running
 
 set the two following variable names
 - `BWHERO_HOST` for bandwidth hero server address (example: "http://localhost:8080/")
