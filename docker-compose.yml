@@ -9,7 +9,12 @@ services:
       - bwhero
     environment:
       BWHERO_HOST: "http://bwhero:5000"
-      #USER_AGENT: mediaproxyoma [https://github.com/Yonle/mediaproxyoma] - v0.3
+      # USER_AGENT: mediaproxyoma [https://github.com/Yonle/mediaproxyoma] - v0.3
+      # OLD_MEDIA_HOST: eu2.somestorage.com
+      # OLD_MEDIA_PATHPREFIX: /xxx:fedi/
+      # NEW_MEDIA_HOST: 127.0.0.1:6081
+      # NEW_MEDIA_SCHEME: http
+      # NEW_MEDIA_PATHPREFIX: /media/
       LISTEN: "0.0.0.0:8080"
     ports:
       - "8080:8080"
