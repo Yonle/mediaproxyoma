@@ -21,7 +21,6 @@ var upstreamHeaders = []string{
 	"ETag",
 	"Last-Modified",
 	"Expires",
-	"Vary",
 
 	"Content-Disposition",
 }

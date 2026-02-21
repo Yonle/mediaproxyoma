@@ -1,0 +1,36 @@
+#!/sbin/openrc-run
+
+name="mediaproxyoma"
+description="mediaproxyoma service"
+
+supervisor="supervise-daemon"
+command="/bin/mediaproxyoma"
+command_background="yes"
+command_user="mediaproxyoma"
+
+no_new_privs="yes"
+
+pidfile="/run/${RC_SVCNAME}.pid"
+
+retry="SIGTERM/60/SIGKILL/5"
+
+error_log="/var/log/${RC_SVCNAME}.log"
+
+# Environment
+export LISTEN="0.0.0.0:8080"
+export BWHERO_HOST="http://127.0.0.1:4001"
+export USER_AGENT="mediaproxyoma at fedinet.example.com; admin contact: mailto:admin@example.com"
+#export PLEROMA_SECRET_KEY_BASE="/xxxxxxx/xxxxxx"
+#export OLD_MEDIA_HOST=eu2.somestorage.com
+#export OLD_MEDIA_PATHPREFIX=/xxx:fedi/
+#export NEW_MEDIA_HOST=10.154.198.12:6081
+#export NEW_MEDIA_SCHEME=http
+#export NEW_MEDIA_PATHPREFIX=/media/
+
+depend() {
+    need net bwhero
+}
+
+start_pre() {
+    checkpath --directory --owner root:root --mode 0755 /run
+}

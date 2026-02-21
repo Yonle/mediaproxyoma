@@ -1,0 +1,31 @@
+#!/sbin/openrc-run
+
+name="bwhero"
+description="bwhero service"
+
+supervisor="supervise-daemon"
+command="/bin/bwhero"
+command_background="no"
+command_user="mediaproxyoma"
+
+no_new_privs="yes"
+
+pidfile="/run/${RC_SVCNAME}.pid"
+
+retry="SIGTERM/60/SIGKILL/5"
+
+error_log="/var/log/${RC_SVCNAME}.log"
+
+# Environment
+export LISTEN="127.0.0.1:4001"
+export ANIMATIONSIZELIMIT="50000000"
+export USER_AGENT="mediaproxyoma at fedinet.example.com; admin contact: mailto:admin@example.com"
+#export VIDEOSIZELIMIT="100000000"
+
+depend() {
+    need net
+}
+
+start_pre() {
+    checkpath --directory --owner root:root --mode 0755 /run
+}

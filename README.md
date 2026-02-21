@@ -1,12 +1,16 @@
 ## pleroma/akkoma alternative mediaproxy
 
-all you need is a working [bandwidth hero](https://github.com/Yonle/go-bwhero) backend, and a golang compiler.
+**requirements**:
+you need a working [go-bwhero](https://github.com/Yonle/go-bwhero) backend, and a golang compiler.
 
 ```
 go build -o mediaproxyoma .
 ```
 
-then, set the two following variable names
+
+## running
+
+set the two following variable names
 - `BWHERO_HOST` for bandwidth hero server address (example: "http://localhost:8080/")
 - `LISTEN` for listen address (syntax: "<listenaddr>:<port>")
 
@@ -24,6 +28,41 @@ docker compose up
 it will be on localhost:8080.
 
 then, configure your reverse proxy to forward any request going to /proxy/* to be forwarded to http://localhost:8080/ instead.
+
+## optional, but IMPORTANT for production
+
+by default, mediaproxyoma:
+- has a default user agent linking to itself
+- **didn't check for signature**
+
+this is good for testing, but NOT for production server.
+
+so, if you're planning to use this in production, you must configure the following environment variables:
+- `USER_AGENT`
+- `PLEROMA_SECRET_KEY_BASE`
+
+you can obtain `PLEROMA_SECRET_KEY_BASE` in your `prod.secret.exs` config:
+```
+import Config
+
+config :pleroma, Pleroma.Web.Endpoint,
+   url: [host: "fedinet.waltuh.cyou", scheme: "https", port: 443],
+   http: [ip: {127.0.0.1}, port: 4000],
+   secret_key_base: "/xxxxxxxx/xxxxxxx",
+   #                 ^ TAKE THIS
+   live_view: [signing_salt: "XXXXXX"],
+   signing_salt: "XXXXXX"
+```
+
+then set it in environment variable:
+```
+env \
+  USER_AGENT="mediaproxyoma at fedinet.example.com; admin contact: mailto:admin@example.com" \
+  PLEROMA_SECRET_KEY_BASE="/xxxxxxxx/xxxxxxx" \
+  ./mediaproxyoma
+```
+
+notice: you **MUST KEEP THE SECRET KEY BASE SECRET**.
 
 ## misc if you wanna deal with old media
 
@@ -50,3 +89,7 @@ env \
 ```
 
 The following example will make mediaproxyoma proxy anything that goes to `https://eu2.somestorage.com/xxx:fedi/<filename>` going to `http://127.0.0.1:6081/media/<filename>` instead. It's useful for say, making full use of varnish cache.
+
+## other probably useful environment variable
+
+changing Allowed Origin for CORS: `ALLOW_ORIGIN` (default is `*`)
