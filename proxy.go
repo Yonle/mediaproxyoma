@@ -36,6 +36,12 @@ func proxy(ctx context.Context, r *http.Request, origin_url string) (resp *http.
 	return hc.Do(req)
 }
 
-func buildUrl(upstr string) string {
-	return fmt.Sprintf("%s?url=%s&bw=0&l=40&nr=1", proxyhost, url.QueryEscape(upstr))
+func buildUrl(upstr string, isStatic bool) string {
+	var anim int
+	if isStatic {
+		anim = 0
+	} else {
+		anim = 1
+	}
+	return fmt.Sprintf("%s?url=%s&bw=0&l=40&nr=1&a=%d", proxyhost, url.QueryEscape(upstr), anim)
 }

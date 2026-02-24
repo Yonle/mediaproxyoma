@@ -54,8 +54,10 @@ func main() {
 			return
 		}
 
+		isStatic := r.URL.Query().Get("static") == "true"
+
 		log.Println("previewing", url)
-		resp, err := proxy(r.Context(), r, buildUrl(url))
+		resp, err := proxy(r.Context(), r, buildUrl(url, isStatic))
 		if err != nil {
 			log.Println("can't fetch from bwhero:", err)
 
