@@ -10,7 +10,7 @@ command_user="mediaproxyoma"
 
 no_new_privs="yes"
 
-pidfile="/run/${RC_SVCNAME}.pid"
+pidfile="/run/${RC_SVCNAME}/${RC_SVCNAME}.pid"
 
 retry="SIGTERM/60/SIGKILL/5"
 
@@ -27,5 +27,6 @@ depend() {
 }
 
 start_pre() {
-    checkpath --directory --owner root:root --mode 0755 /run
+    checkpath --directory --owner $command_user:$command_user --mode 0755 /run/${RC_SVCNAME}
+    checkpath --file --owner $command_user:$command_user --mode 0644 $error_log
 }
