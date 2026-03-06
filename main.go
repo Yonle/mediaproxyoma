@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -36,6 +37,8 @@ func main() {
 			return
 		}
 
+		filename := r.URL.Query().Get("name")
+
 		log.Println("proxying", url)
 		resp, err := proxy(r.Context(), r, url)
 		if err != nil {
@@ -44,7 +47,7 @@ func main() {
 			return
 		}
 
-		sex(w, resp.Body, resp)
+		sex(w, resp.Body, resp, filename)
 	})
 
 	http.HandleFunc(proxypreviewpath, func(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +57,9 @@ func main() {
 			return
 		}
 
-		isStatic := r.URL.Query().Get("static") == "true"
+		q := r.URL.Query()
+		isStatic := q.Get("static") == "true"
+		filename := q.Get("name")
 
 		log.Println("previewing", url)
 		resp, err := proxy(r.Context(), r, buildUrl(url, isStatic))
@@ -68,11 +73,11 @@ func main() {
 				return
 			}
 
-			sex(w, resp.Body, resp)
+			sex(w, resp.Body, resp, filename)
 			return
 		}
 
-		sex(w, resp.Body, resp)
+		sex(w, resp.Body, resp, filename)
 	})
 
 	log.Println("Listening at", listen)
@@ -81,7 +86,7 @@ func main() {
 	}
 }
 
-func sex(hole http.ResponseWriter, dih io.ReadCloser, sperm *http.Response) {
+func sex(hole http.ResponseWriter, dih io.ReadCloser, sperm *http.Response, childname string) {
 	defer dih.Close()
 
 	h := hole.Header()
@@ -95,6 +100,10 @@ func sex(hole http.ResponseWriter, dih io.ReadCloser, sperm *http.Response) {
 	}
 
 	copyUpstreamHeaders(h, sperm.Header)
+
+	if len(childname) > 0 {
+		h.Set("Content-Disposition", fmt.Sprintf("inline; filename=\"%s\"", childname))
+	}
 
 	hole.WriteHeader(sperm.StatusCode)
 
