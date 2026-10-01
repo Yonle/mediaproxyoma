@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -17,10 +18,17 @@ func init() {
 	}
 }
 
+var timeout = 30 * time.Second
+
 var hc = http.Client{
-	Timeout: 30 * time.Second,
 	Transport: &http.Transport{
 		DisableCompression: true,
+		DialContext: (&net.Dialer{
+			Timeout: timeout,
+		}).DialContext,
+
+		TLSHandshakeTimeout:   timeout,
+		ResponseHeaderTimeout: timeout,
 	},
 }
 
